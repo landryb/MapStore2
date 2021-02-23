@@ -194,7 +194,7 @@ Layers.registerType('wms', {
         const queryParameters = removeNulls(wmsToLeafletOptions(options) || {});
         urls.forEach(url => addAuthenticationParameter(url, queryParameters, options.securityToken));
         if (options.useForElevation) {
-            return L.tileLayer.elevationWMS(urls, queryParameters, options.nodata || -9999, options.littleendian = false);
+            return L.tileLayer.elevationWMS(urls, queryParameters, options.nodata || -9999, options.littleendian || false);
         }
         if (options.singleTile) {
             return L.nonTiledLayer.wmsCustom(urls[0], queryParameters);
