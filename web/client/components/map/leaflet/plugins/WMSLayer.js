@@ -149,7 +149,7 @@ L.TileLayer.ElevationWMS = L.TileLayer.MultipleUrlWMS.extend({
 });
 
 L.tileLayer.elevationWMS = function(urls, options, nodata, littleendian) {
-    return new L.TileLayer.ElevationWMS(urls, options, nodata, littlendian);
+    return new L.TileLayer.ElevationWMS(urls, options, nodata, littleendian);
 };
 
 const removeNulls = (obj = {}) => {
