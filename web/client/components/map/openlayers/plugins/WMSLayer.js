@@ -162,7 +162,7 @@ function getElevation(pos) {
     try {
         const tilePoint = getTileFromCoords(this, pos);
         const tileSize = this.getSource().getTileGrid().getTileSize();
-        const elevation = getElevationFunc(tileCoordsToKey(tilePoint), getTileRelativePixel(this, pos, tilePoint), tileSize, this.get('nodata'));
+        const elevation = getElevationFunc(tileCoordsToKey(tilePoint), getTileRelativePixel(this, pos, tilePoint), tileSize, this.get('nodata'), this.get('littleEndian'));
         if (elevation.available) {
             return elevation.value;
         }
@@ -247,6 +247,7 @@ const createLayer = (options, map) => {
     }
     if (options.useForElevation) {
         layer.set('nodata', options.nodata);
+        layer.set('littleEndian', options.littleendian ?? false);
         layer.set('getElevation', getElevation.bind(layer));
     }
     return layer;
