@@ -461,7 +461,7 @@ export const specCreators = {
                 "matrixSet": tileMatrixSetName,
                 "style": layer.style,
                 "name": layer.name,
-                "requestEncoding": layer.requestEncoding === "RESTful" ? "REST" : layer.requestEncoding,
+                "requestEncoding": layer.requestEncoding === "RESTful" ? "REST" : layer.requestEncoding || "KVP",
                 "opacity": getOpacity(layer),
                 "version": layer.version || "1.0.0"
             };
