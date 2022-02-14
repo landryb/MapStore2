@@ -32,6 +32,7 @@ import {
     changeSelectedService
 } from '../actions/catalog';
 import { showLayerMetadata, addLayer } from '../actions/layers';
+import { removeWorkspace } from '../epics/layers';
 import { error, success } from '../actions/notifications';
 import { SET_CONTROL_PROPERTY, setControlProperties } from '../actions/controls';
 import { closeFeatureGrid } from '../actions/featuregrid';
@@ -267,7 +268,7 @@ export default (API) => ({
                 return Rx.Observable.defer(() => API.wms.getCapabilities(getCapabilitiesUrl(layer)))
                     .switchMap((caps) => {
                         const layersXml = get(caps, 'capability.layer.layer', [get(caps, 'capability.layer')]);
-                        const metadataUrls = layersXml.length === 1 ? layersXml[0].metadataURL : find(layersXml, l => l.name === layer.name.split(':')[1]);
+                        const metadataUrls = layersXml.length === 1 ? layersXml[0].metadataURL : find(layersXml, l => l.name === removeWorkspace(layer.name)).metadataURL;
                         const metadataUrl = get(find(metadataUrls, mUrl => isString(mUrl.type) &&
                             mUrl.type.toLowerCase() === 'iso19115:2003' &&
                             (mUrl.format === 'application/xml' || mUrl.format === 'text/xml')), 'onlineResource.href');
