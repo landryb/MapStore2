@@ -94,7 +94,7 @@ const loadFunction = (options, headers) => function(image, src) {
 /**
     @param {object} options of the layer
     @return the Openlayers options from the layers ones and/or default.
-    tiled params must be tru if not defined
+    tiled params must be false if not defined
 */
 function wmsToOpenlayersOptions(options) {
     const params = optionsToVendorParams(options);
@@ -106,7 +106,7 @@ function wmsToOpenlayersOptions(options) {
         TRANSPARENT: options.transparent !== undefined ? options.transparent : true,
         SRS: CoordinatesUtils.normalizeSRS(options.srs || 'EPSG:3857', options.allowedSRS),
         CRS: CoordinatesUtils.normalizeSRS(options.srs || 'EPSG:3857', options.allowedSRS),
-        TILED: options.singleTile ? false : (!isNil(options.tiled) ? options.tiled : true),
+        TILED: options.singleTile ? false : (!isNil(options.tiled) ? options.tiled : false),
         VERSION: options.version || "1.3.0"
     }, assign(
         {},
