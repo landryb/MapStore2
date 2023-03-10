@@ -46,6 +46,7 @@ const getTileSizeSelectOptions = (opts) => {
  *
  * **WMS|CSW**
  * - tileSize: Option allows to select and configure the default tile size of the layer to be requested with
+ * - serverType: Option allows to specify whether some geoserver vendor options can be used or should be avoided
  * - format: Option allows to select and configure the default format of the layer to be requested with
  * - autoload: Option allows automatic fetching of the results upon selecting the service from Service dropdown
  * - hideThumbnail: Options allows to hide the thumbnail on the result
@@ -60,6 +61,7 @@ export default ({
     selectedService,
     onFormatOptionsFetch = () => {},
     advancedRasterSettingsStyles = {},
+    serverTypeOptions = ServerTypes,
     tileSizeOptions = [256, 512],
     isLocalizedLayerStylesEnabled,
     onChangeMetadataTemplate = () => { },
@@ -177,6 +179,17 @@ export default ({
                     value={getTileSizeSelectOptions([service.layerOptions?.tileSize || 256])[0]}
                     options={tileSelectOptions}
                     onChange={event => onChangeServiceProperty("layerOptions", { ...service.layerOptions, tileSize: event && event.value })} />
+            </Col >
+        </FormGroup>
+        <FormGroup style={advancedRasterSettingsStyles}>
+            <Col xs={6} >
+                <ControlLabel>Server Type</ControlLabel>
+            </Col >
+            <Col xs={6} style={{marginBottom: '5px'}}>
+                <Select
+                    value={service?.serverType}
+                    options={ServerTypes}
+                    onChange={event => onChangeServiceProperty("serverType", event.value)} />
             </Col >
         </FormGroup>
         {!isNil(service.type) && service.type === "csw" &&

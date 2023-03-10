@@ -101,6 +101,7 @@ const recordToLayer = (record, {
         links: getRecordLinks(record),
         params: params,
         allowedSRS: allowedSRS,
+        serverType: record.serverType,
         catalogURL,
         ...layerBaseConfig,
         ...record.layerOptions,
