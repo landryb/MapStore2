@@ -15,6 +15,7 @@ const Select = localizedProps('noResultsText')(RS);
 import CommonAdvancedSettings from './CommonAdvancedSettings';
 import {isNil} from "lodash";
 import ReactQuill from '../../../../libs/quill/react-quill-suspense';
+import { ServerTypes } from '../../../../utils/LayersUtils';
 
 import InfoPopover from '../../../widgets/widget/InfoPopover';
 import CSWFilters from "./CSWFilters";
@@ -27,6 +28,9 @@ import WMSDomainAliases from "./WMSDomainAliases";
  */
 const getTileSizeSelectOptions = (opts) => {
     return opts.map(opt => ({label: `${opt}x${opt}`, value: opt}));
+};
+const getServerTypeOptions = (opts) => {
+    return opts.map(opt => ({label: opt, value: opt}));
 };
 
 /**
@@ -61,7 +65,6 @@ export default ({
     selectedService,
     onFormatOptionsFetch = () => {},
     advancedRasterSettingsStyles = {},
-    serverTypeOptions = ServerTypes,
     tileSizeOptions = [256, 512],
     isLocalizedLayerStylesEnabled,
     onChangeMetadataTemplate = () => { },
@@ -74,6 +77,7 @@ export default ({
     }, [props.autoSetVisibilityLimits]);
 
     const tileSelectOptions = getTileSizeSelectOptions(tileSizeOptions);
+    const serverTypeOptions = getServerTypeOptions(Object.keys(ServerTypes));
     return (<CommonAdvancedSettings {...props} onChangeServiceProperty={onChangeServiceProperty} service={service} >
         {(isLocalizedLayerStylesEnabled && !isNil(service.type) ? service.type === "wms" : false) && (<FormGroup controlId="localized-styles" key="localized-styles">
             <Col xs={12}>
@@ -187,9 +191,9 @@ export default ({
             </Col >
             <Col xs={6} style={{marginBottom: '5px'}}>
                 <Select
-                    value={service?.serverType}
-                    options={ServerTypes}
-                    onChange={event => onChangeServiceProperty("serverType", event.value)} />
+                    value={!isNil(service.serverType) ? service.serverType: ServerTypes.GEOSERVER}
+                    options={serverTypeOptions}
+                    onChange={event => onChangeServiceProperty("serverType", {event && event.value })} />
             </Col >
         </FormGroup>
         {!isNil(service.type) && service.type === "csw" &&
