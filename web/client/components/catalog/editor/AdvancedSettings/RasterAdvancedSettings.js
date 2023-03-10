@@ -193,7 +193,7 @@ export default ({
                 <Select
                     value={!isNil(service.serverType) ? service.serverType: ServerTypes.GEOSERVER}
                     options={serverTypeOptions}
-                    onChange={event => onChangeServiceProperty("serverType", {event && event.value })} />
+                    onChange={event => onChangeServiceProperty("serverType", event && event.value )} />
             </Col >
         </FormGroup>
         {!isNil(service.type) && service.type === "csw" &&
