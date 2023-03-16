@@ -76,7 +76,6 @@ const recordToLayer = (record, {
         MinScaleDenominator: minScaleDenominator
     } = record?.capabilities ?? {};
 
-    console.log(service);
     console.log("creating wms layer with type "+ service.serverType);
     let layer = {
         type: 'wms',
