@@ -29,8 +29,8 @@ import WMSDomainAliases from "./WMSDomainAliases";
 const getTileSizeSelectOptions = (opts) => {
     return opts.map(opt => ({label: `${opt}x${opt}`, value: opt}));
 };
-const getServerTypeOptions = (opts) => {
-    return opts.map(opt => ({label: opt, value: opt}));
+const getServerTypeOptions = () => {
+    return Object.keys(ServerTypes).map((key) => ({ label: key, value: ServerTypes[key] }));
 };
 
 /**
@@ -77,7 +77,7 @@ export default ({
     }, [props.autoSetVisibilityLimits]);
 
     const tileSelectOptions = getTileSizeSelectOptions(tileSizeOptions);
-    const serverTypeOptions = getServerTypeOptions(Object.keys(ServerTypes));
+    const serverTypeOptions = getServerTypeOptions();
     return (<CommonAdvancedSettings {...props} onChangeServiceProperty={onChangeServiceProperty} service={service} >
         {(isLocalizedLayerStylesEnabled && !isNil(service.type) ? service.type === "wms" : false) && (<FormGroup controlId="localized-styles" key="localized-styles">
             <Col xs={12}>
@@ -191,7 +191,7 @@ export default ({
             </Col >
             <Col xs={6} style={{marginBottom: '5px'}}>
                 <Select
-                    value={getServerTypeOptions([service.layerOptions?.serverType || ServerTypes.GEOSERVER])[0]}
+                    value={service.serverType || ServerTypes.GEOSERVER}
                     options={serverTypeOptions}
                     onChange={event => onChangeServiceProperty("layerOptions", { ...service.layerOptions, serverType: event?.value })} />
             </Col >
