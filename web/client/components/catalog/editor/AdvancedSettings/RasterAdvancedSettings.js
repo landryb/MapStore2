@@ -191,9 +191,9 @@ export default ({
             </Col >
             <Col xs={6} style={{marginBottom: '5px'}}>
                 <Select
-                    value={!isNil(service.serverType) ? service.serverType: ServerTypes.GEOSERVER}
+                    value={getServerTypeOptions([service.layerOptions?.serverType || ServerTypes.GEOSERVER])[0]}
                     options={serverTypeOptions}
-                    onChange={event => onChangeServiceProperty("serverType", event && event.value )} />
+                    onChange={event => onChangeServiceProperty("layerOptions", { ...service.layerOptions, serverType: event?.value })} />
             </Col >
         </FormGroup>
         {!isNil(service.type) && service.type === "csw" &&
