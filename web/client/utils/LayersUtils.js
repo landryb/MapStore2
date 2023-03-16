@@ -851,11 +851,14 @@ export const removeWorkspace = (layer) => {
 /**
  * Returns 'safe' WMS Vendor Parameters
  */
-export const getWMSVendorParams = (layer, options) =>  {
+ */
+export const getWMSVendorParams = (layer) =>  {
+    console.log("in getWMSVendorParams");
+    console.log(layer);
     if (layer?.serverType === ServerTypes.NO_VENDOR) {
         return {}
     }
-    return { TILED: options.singleTile ? false : (!isNil(options.tiled) ? options.tiled : true)}
+    return { TILED: layer.singleTile ? false : (!isNil(layer.tiled) ? layer.tiled : true)}
 };
 
 LayersUtils = {
