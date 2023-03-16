@@ -497,7 +497,6 @@ export function getResolutionMultiplier(printSize, screenSize, dpiRatio = DEFAUL
 }
 
 export const getPrintVendorParams = (layer) => {
-    console.log("in getPrintVendorParams, serverType is " + layer?.serverType + " returning empty: "+ (layer?.serverType === ServerTypes.NO_VENDOR));
     if (layer?.serverType === ServerTypes.NO_VENDOR) {
         return {}
     }

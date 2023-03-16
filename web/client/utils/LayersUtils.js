@@ -853,7 +853,6 @@ export const removeWorkspace = (layer) => {
  */
  */
 export const getWMSVendorParams = (layer) =>  {
-    console.log("in getWMSVendorParams, serverType is " + layer?.serverType + " returning empty: "+ (layer?.serverType === ServerTypes.NO_VENDOR));
     if (layer?.serverType === ServerTypes.NO_VENDOR) {
         return {}
     }

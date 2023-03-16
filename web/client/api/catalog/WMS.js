@@ -76,7 +76,6 @@ const recordToLayer = (record, {
         MinScaleDenominator: minScaleDenominator
     } = record?.capabilities ?? {};
 
-    console.log("creating wms layer with type "+ service.serverType);
     let layer = {
         type: 'wms',
         requestEncoding: record.requestEncoding, // WMTS KVP vs REST, KVP by default
