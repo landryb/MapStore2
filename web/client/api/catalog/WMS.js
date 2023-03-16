@@ -39,6 +39,7 @@ const recordToLayer = (record, {
     map = {},
     layerBaseConfig,
     localizedLayerStyles,
+    service,
     allowUnsecureLayers
 } = {}) => {
     if (!record || !record.references) {
@@ -75,8 +76,8 @@ const recordToLayer = (record, {
         MinScaleDenominator: minScaleDenominator
     } = record?.capabilities ?? {};
 
-    console.log(record);
-    console.log("creating wms layer with type"+ record.serverType);
+    console.log(service);
+    console.log("creating wms layer with type "+ service.serverType);
     let layer = {
         type: 'wms',
         requestEncoding: record.requestEncoding, // WMTS KVP vs REST, KVP by default
@@ -103,7 +104,7 @@ const recordToLayer = (record, {
         links: getRecordLinks(record),
         params: params,
         allowedSRS: allowedSRS,
-        serverType: record.serverType,
+        serverType: service.serverType,
         catalogURL,
         ...layerBaseConfig,
         ...record.layerOptions,
