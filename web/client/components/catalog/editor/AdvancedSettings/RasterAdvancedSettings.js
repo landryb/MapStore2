@@ -191,7 +191,7 @@ export default ({
             </Col >
             <Col xs={6} style={{marginBottom: '5px'}}>
                 <Select
-                    value={service.serverType || ServerTypes.GEOSERVER}
+                    value={service.layerOptions?.serverType || ServerTypes.GEOSERVER}
                     options={serverTypeOptions}
                     onChange={event => onChangeServiceProperty("layerOptions", { ...service.layerOptions, serverType: event?.value })} />
             </Col >
