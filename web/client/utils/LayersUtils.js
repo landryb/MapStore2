@@ -849,8 +849,8 @@ export const removeWorkspace = (layer) => {
 };
 
 /**
- * Returns 'safe' WMS Vendor Parameters
- */
+ * Returns vendor params that can be used when calling wms server for display requests
+ * @param {layer} the layer object
  */
 export const getWMSVendorParams = (layer) =>  {
     if (layer?.serverType === ServerTypes.NO_VENDOR) {

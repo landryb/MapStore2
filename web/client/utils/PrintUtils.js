@@ -496,6 +496,10 @@ export function getResolutionMultiplier(printSize, screenSize, dpiRatio = DEFAUL
     return printSize / screenSize * dpiRatio;
 }
 
+/**
+ * Returns vendor params that can be used when calling wms server for print requests
+ * @param {layer} the layer object
+ */
 export const getPrintVendorParams = (layer) => {
     if (layer?.serverType === ServerTypes.NO_VENDOR) {
         return {}
