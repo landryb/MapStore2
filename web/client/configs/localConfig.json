@@ -91,7 +91,15 @@
               "gs_stable_wms": {
                 "url": "https://gs-stable.geo-solutions.it/geoserver/wms",
                 "type": "wms",
+                "serverType": "geoserver",
                 "title": "GeoSolutions GeoServer WMS",
+                "autoload": false
+              },
+              "gs_stable_wms_2": {
+                "url": "https://gs-stable.geo-solutions.it/geoserver/wms",
+                "type": "wms",
+                "serverType": "no-vendor",
+                "title": "GeoSolutions novendor WMS",
                 "autoload": false
               },
               "gs_stable_wmts": {
