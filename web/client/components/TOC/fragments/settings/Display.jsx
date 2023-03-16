@@ -231,7 +231,7 @@ export default class extends React.Component {
                                 onChange={(e) => this.props.onChange("singleTile", e.target.checked)}>
                                 <Message msgId="layerProperties.singleTile"/>
                             </Checkbox>
-                            {(this.props.isLocalizedLayerStylesEnabled && (
+                            {(this.props.isLocalizedLayerStylesEnabled && this.props.element?.serverType !== ServerTypes.NO_VENDOR && (
                                 <Checkbox key="localizedLayerStyles" value="localizedLayerStyles"
                                     data-qa="display-lacalized-layer-styles-option"
                                     checked={this.props.element && (this.props.element.localizedLayerStyles !== undefined ? this.props.element.localizedLayerStyles : false )}
