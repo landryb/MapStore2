@@ -502,9 +502,9 @@ export function getResolutionMultiplier(printSize, screenSize, dpiRatio = DEFAUL
  */
 export const getPrintVendorParams = (layer) => {
     if (layer?.serverType === ServerTypes.NO_VENDOR) {
-        return {}
+        return {};
     }
-    return { "TILED": true }
+    return { "TILED": true };
 };
 
 /**

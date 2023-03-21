@@ -653,8 +653,8 @@ export const saveLayer = (layer) => {
  * should rather be avoided
 */
 export const ServerTypes = {
-  GEOSERVER: 'geoserver',
-  NO_VENDOR: 'no-vendor'
+    GEOSERVER: 'geoserver',
+    NO_VENDOR: 'no-vendor'
 };
 
 /**
@@ -854,9 +854,9 @@ export const removeWorkspace = (layer) => {
  */
 export const getWMSVendorParams = (layer) =>  {
     if (layer?.serverType === ServerTypes.NO_VENDOR) {
-        return {}
+        return {};
     }
-    return { TILED: layer.singleTile ? false : (!isNil(layer.tiled) ? layer.tiled : true)}
+    return { TILED: layer.singleTile ? false : (!isNil(layer.tiled) ? layer.tiled : true)};
 };
 
 LayersUtils = {
