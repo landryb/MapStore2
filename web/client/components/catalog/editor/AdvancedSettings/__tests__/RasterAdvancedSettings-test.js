@@ -224,4 +224,22 @@ describe('Test Raster advanced settings', () => {
         expect(spyOn).toHaveBeenCalled();
         expect(spyOn.calls[0].arguments).toEqual([ 'layerOptions', { singleTile: true } ]);
     });
+    it('test component onChangeServiceProperty serverType', () => {
+        const action = {
+            onChangeServiceProperty: () => {}
+        };
+        const spyOn = expect.spyOn(action, 'onChangeServiceProperty');
+        ReactDOM.render(<RasterAdvancedSettings
+            onChangeServiceProperty={action.onChangeServiceProperty}
+            service={{ type: "wms", layerOptions: {serverType: 'no-vendor'} }}
+        />, document.getElementById("container"));
+        const advancedSettingsPanel = document.getElementsByClassName("mapstore-switch-panel");
+        expect(advancedSettingsPanel).toBeTruthy();
+        const serverTypeOption = document.querySelectorAll('input[role="combobox"]')[2];
+        expect(serverTypeOption).toBeTruthy();
+        TestUtils.Simulate.change(serverTypeOption, { target: { value: "geoserver" }});
+        TestUtils.Simulate.keyDown(serverTypeOption, { keyCode: 9, key: 'Tab' });
+        expect(spyOn).toHaveBeenCalled();
+        expect(spyOn.calls[0].arguments).toEqual([ 'layerOptions', { serverType: "geoserver" } ]);
+    });
 });
