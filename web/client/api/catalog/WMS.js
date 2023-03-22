@@ -39,7 +39,6 @@ const recordToLayer = (record, {
     map = {},
     layerBaseConfig,
     localizedLayerStyles,
-    service,
     allowUnsecureLayers
 } = {}) => {
     if (!record || !record.references) {
@@ -102,7 +101,6 @@ const recordToLayer = (record, {
         links: getRecordLinks(record),
         params: params,
         allowedSRS: allowedSRS,
-        serverType: service?.serverType,
         catalogURL,
         ...layerBaseConfig,
         ...record.layerOptions,
