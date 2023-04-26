@@ -207,6 +207,7 @@ function getMetadataDescription(options) {
         let urlTemplate = url + '?SERVICE=WMS&REQUEST=GetMap' +
             '&layers=' + layerName +
             '&version=' + version +
+            '&styles=' +
             '&bbox=';
 
         if (isNewVersion && firstAxeIsLatitude) {
