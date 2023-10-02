@@ -132,6 +132,7 @@ const fetchMetadata = (layer, url, controller) => {
 
 export const getRecords = (_url, startPosition, maxRecords, text, info = {}) => {
     const service = get(info, 'options.service');
+    const controller = get(info, 'options.controller');
     let layers = [];
     if (service.records) {
         // each record/url corresponds to a layer
@@ -144,7 +145,6 @@ export const getRecords = (_url, startPosition, maxRecords, text, info = {}) => 
                 sources: [{url}],
                 options: service.options || {}
             };
-            const controller = get(info, 'options.controller');
             const isSave = get(info, 'options.save', false);
             // Fetch metadata only on saving the service (skip on search)
             if ((isNil(service.fetchMetadata) || service.fetchMetadata) && isSave) {
@@ -154,6 +154,23 @@ export const getRecords = (_url, startPosition, maxRecords, text, info = {}) => 
         });
     }
     return Promise.all([...layers]).then((_layers) => {
+        if (!_layers.length) {
+            return fetchMetadata({
+                ...service,
+                title: text,
+                identifier: _url,
+                type: COG_LAYER_TYPE,
+                sources: [{url: _url}],
+                options: service.options || {}
+            }, _url, controller).then(lyr => {
+                const records = [lyr];
+                return {
+                    numberOfRecordsMatched: 1,
+                    numberOfRecordsReturned: 1,
+                    records
+                };
+            });
+        }
         return searchAndPaginate(_layers, startPosition, maxRecords, text);
     });
 };
