@@ -77,6 +77,59 @@ const fromUrl = (url, signal) => {
     });
 };
 let capabilitiesCache = {};
+
+/**
+ * Get raster metadata from url
+ * @param {Object} layer
+ * @param {String} url
+ * @param {String} controller
+ * @returns {object} layer object with bbox & crs
+ */
+const fetchMetadata = (layer, url, controller) => {
+    const cached = capabilitiesCache[url];
+    if (cached && new Date().getTime() < cached.timestamp + (ConfigUtils.getConfigProp('cacheExpire') || 60) * 1000) {
+        return {...cached.data};
+    }
+    return fromUrl(url, controller?.signal)
+        .then(image => {
+            const crs = getProjectionFromGeoKeys(image);
+            const extent = image.getBoundingBox();
+            const isProjectionDefined = isProjectionAvailable(crs);
+            layer = {
+                ...layer,
+                sourceMetadata: {
+                    crs,
+                    extent: extent,
+                    width: image.getWidth(),
+                    height: image.getHeight(),
+                    tileWidth: image.getTileWidth(),
+                    tileHeight: image.getTileHeight(),
+                    origin: image.getOrigin(),
+                    resolution: image.getResolution()
+                },
+                // skip adding bbox when geokeys or extent is empty
+                ...(!isEmpty(extent) && !isEmpty(crs) && {
+                    bbox: {
+                        crs,
+                        ...(isProjectionDefined && {
+                            bounds: {
+                                minx: extent[0],
+                                miny: extent[1],
+                                maxx: extent[2],
+                                maxy: extent[3]
+                            }}
+                        )
+                    }
+                })
+            };
+            capabilitiesCache[url] = {
+                timestamp: new Date().getTime(),
+                data: {...layer}
+            };
+            return layer;
+        }).catch(() => ({...layer}));
+};
+
 export const getRecords = (_url, startPosition, maxRecords, text, info = {}) => {
     const service = get(info, 'options.service');
     let layers = [];
@@ -95,48 +148,7 @@ export const getRecords = (_url, startPosition, maxRecords, text, info = {}) => 
             const isSave = get(info, 'options.save', false);
             // Fetch metadata only on saving the service (skip on search)
             if ((isNil(service.fetchMetadata) || service.fetchMetadata) && isSave) {
-                const cached = capabilitiesCache[url];
-                if (cached && new Date().getTime() < cached.timestamp + (ConfigUtils.getConfigProp('cacheExpire') || 60) * 1000) {
-                    return {...cached.data};
-                }
-                return fromUrl(url, controller?.signal)
-                    .then(image => {
-                        const crs = getProjectionFromGeoKeys(image);
-                        const extent = image.getBoundingBox();
-                        const isProjectionDefined = isProjectionAvailable(crs);
-                        layer = {
-                            ...layer,
-                            sourceMetadata: {
-                                crs,
-                                extent: extent,
-                                width: image.getWidth(),
-                                height: image.getHeight(),
-                                tileWidth: image.getTileWidth(),
-                                tileHeight: image.getTileHeight(),
-                                origin: image.getOrigin(),
-                                resolution: image.getResolution()
-                            },
-                            // skip adding bbox when geokeys or extent is empty
-                            ...(!isEmpty(extent) && !isEmpty(crs) && {
-                                bbox: {
-                                    crs,
-                                    ...(isProjectionDefined && {
-                                        bounds: {
-                                            minx: extent[0],
-                                            miny: extent[1],
-                                            maxx: extent[2],
-                                            maxy: extent[3]
-                                        }}
-                                    )
-                                }
-                            })
-                        };
-                        capabilitiesCache[url] = {
-                            timestamp: new Date().getTime(),
-                            data: {...layer}
-                        };
-                        return layer;
-                    }).catch(() => ({...layer}));
+                layer = fetchMetadata(layer, url, controller);
             }
             return Promise.resolve(layer);
         });
