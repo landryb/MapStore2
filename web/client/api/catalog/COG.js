@@ -83,7 +83,7 @@ let capabilitiesCache = {};
  * @param {Object} layer
  * @param {String} url
  * @param {String} controller
- * @returns {object} layer object with bbox & crs
+ * @returns {object} new layer object with bbox & crs
  */
 const fetchMetadata = (layer, url, controller) => {
     const cached = capabilitiesCache[url];
@@ -95,7 +95,7 @@ const fetchMetadata = (layer, url, controller) => {
             const crs = getProjectionFromGeoKeys(image);
             const extent = image.getBoundingBox();
             const isProjectionDefined = isProjectionAvailable(crs);
-            layer = {
+            const _layer = {
                 ...layer,
                 sourceMetadata: {
                     crs,
@@ -124,9 +124,9 @@ const fetchMetadata = (layer, url, controller) => {
             };
             capabilitiesCache[url] = {
                 timestamp: new Date().getTime(),
-                data: {...layer}
+                data: {..._layer}
             };
-            return layer;
+            return _layer;
         }).catch(() => ({...layer}));
 };
 
